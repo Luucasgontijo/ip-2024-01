@@ -73,29 +73,6 @@ func q4() {
 	fmt.Printf("Custo com desconto: R$ %.2f \n", valor_com_desconto);
 }
 
-func q5() {
-	var contaId int;
-	var valorConta, metrosCubicos float32;
-	var tipoConsumidor string;
-	fmt.Scanln(&contaId, &metrosCubicos, &tipoConsumidor);
-	if tipoConsumidor == "R" {
-		valorConta = 5 + 0.05 * metrosCubicos;
-	}
-	if tipoConsumidor == "C" {
-		valorConta = 500;
-		if metrosCubicos > 80 {
-			valorConta = valorConta + 0.25 * (metrosCubicos - 80);
-		}
-	}
-	if tipoConsumidor == "I" {
-		valorConta = 800;
-		if metrosCubicos > 100 {
-			valorConta = valorConta + 0.04 * (metrosCubicos - 100);
-		}
-	}
-	fmt.Printf("CONTA = %d \n", contaId);
-	fmt.Printf("VALOR DA CONTA = %.2f \n", valorConta);
-}
 
 func q6() {
 	var valoresTemperaturaF []float32;
@@ -174,23 +151,7 @@ func q12() {
 	fmt.Printf("valor a pagar = %.2f \n", total);
 }
 
-func q13() {
-	var nota float32;
-	var conceito string;
-	fmt.Scanln(&nota);
-	if nota >= 0 && nota < 6 {
-		conceito = "D";
-	} else if nota >= 6 && nota < 7.5 {
-		conceito = "C";
-	} else if nota >= 7.5 && nota < 9 {
-		conceito = "B";
-	} else if nota >= 9 && nota <= 10 {
-		conceito = "A";
-	} else {
-		conceito = "Nota inválida"
-	}
-	fmt.Printf("NOTA = %.1f CONCEITO = %s \n", nota, conceito);
-}
+
 
 func q14() {
 	var altura, aresta float64;
@@ -200,13 +161,6 @@ func q14() {
 	fmt.Printf("volume da piramide = %.2f m. cubicos  \n", volume);
 }
 
-func q15() {
-	var numero int;
-	fmt.Scanln(&numero);
-	for i := 2; i <= numero; i = i + 2 {
-		fmt.Printf("%d ^ %d = %d \n", i, i, i * i);
-	}
-}
 
 func q16() {
 	var salario, sal_reajustado float64;
@@ -233,16 +187,6 @@ func q17() {
 	}
 }
 
-func q18() {
-	var numeroInicial, razao, numeroElementos int;
-	fmt.Scan(&numeroInicial, &razao, &numeroElementos);
-	somatorio := numeroInicial;
-	for i := 0; i < numeroElementos - 1; i++ {
-		numeroInicial = numeroInicial + razao;
-		somatorio = somatorio + numeroInicial;
-	}
-	fmt.Println(somatorio);
-}
 
 func q19() {
 	var numero int;
