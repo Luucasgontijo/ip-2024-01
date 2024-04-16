@@ -1,0 +1,57 @@
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "strings"
+)
+
+func main() {
+    var l string
+    i := 1
+    m := make(map[int]string)
+    scanner := bufio.NewScanner(os.Stdin)
+
+    for {
+        fmt.Print("digite a linha: ")
+        scanner.Scan() // Lê uma linha inteira, incluindo espaços
+        l = scanner.Text()
+
+        if l == "-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1" {
+            break
+        } else {
+            // Dividir a entrada em substrings
+            valores := strings.Fields(l)
+            // Construir a string de entrada sem os espaços
+            entrada := strings.Join(valores, " ")
+            m[i] = entrada
+            i++
+        }
+    }
+
+    fmt.Println("Mapa:", m)
+}
+
+package main
+import "fmt"
+
+
+
+func main(){
+    var l string
+    i := 1
+    m := make(map[int]string)
+    for {
+    
+    if l == "-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"{
+        break
+    }
+    else{
+    fmt.Print("digite a linha")
+    fmt.Scanln(&l)
+    m[i] = l 
+    i ++
+   }
+    }
+}
