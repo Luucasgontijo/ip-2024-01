@@ -1,1 +1,934 @@
+package main
 
+import (
+	"bufio"
+	"fmt"
+	"math"
+	"os"
+)
+
+func main() {
+	q10_v2()
+}
+
+func q1() {
+	for {
+		var provas, listas, trabalhoFinal []float64
+		var NF float64
+		var numMatricula, frequencia int
+		var sitFinal string
+
+		fmt.Println("Digite o número de matrícula do aluno (ou -1 para sair):")
+		fmt.Scanln(&numMatricula)
+
+		if numMatricula == -1 {
+			break
+		} else {
+			provas = inserirNotas("prova", 8)
+			listas = inserirNotas("lista", 5)
+			trabalhoFinal = inserirNotas("trabalhoFinal", 1)
+			for {
+				fmt.Println("insira a frequencia do aluno ")
+				fmt.Scanln(&frequencia)
+				if frequencia > 0 && frequencia <= 128 {
+					break
+				} else {
+					fmt.Println("a frequencia deve estar entre 0 e 128 horas. Tente novamente")
+				}
+			}
+			NF = CalcularNotaFinal(provas, listas, trabalhoFinal)
+			sitFinal = situaçãoFinal(NF, frequencia)
+
+			fmt.Printf("Matrícula: %d, Nota Final: %.2f, Situação final: %s\n", numMatricula, NF, sitFinal)
+		}
+	}
+}
+
+// funções para q1
+func inserirNotas(tipo string, quantidade int) []float64 {
+	var notas []float64
+
+	for i := 0; i < quantidade; i++ {
+		for {
+			var nota float64
+			fmt.Printf("Digite a nota da %dª %s: ", i+1, tipo)
+			fmt.Scanln(&nota)
+
+			if nota >= 0 && nota <= 10 {
+				notas = append(notas, nota)
+				break
+			} else {
+				fmt.Println("A nota deve estar entre 0 e 10. Tente novamente.")
+			}
+		}
+	}
+	return notas
+}
+
+func calcularMedia(notas []float64) float64 {
+	soma := 0.0
+	for _, valor := range notas {
+		soma += valor
+	}
+	return soma / float64(len(notas))
+}
+
+func mostrarMedia(tipo string, notas []float64) {
+	media := calcularMedia(notas)
+	fmt.Printf("Média %s: %.2f\n", tipo, media)
+}
+
+func CalcularNotaFinal(provas, listas, trabalhoFinal []float64) float64 {
+	mediaProvas := calcularMedia(provas)
+	mediaListas := calcularMedia(listas)
+	mediaTrabalhoFinal := calcularMedia(trabalhoFinal)
+
+	notaFinal := mediaProvas*0.7 + mediaListas*0.15 + mediaTrabalhoFinal*0.15
+	return notaFinal
+}
+
+func situaçãoFinal(NF float64, frequencia int) string {
+	if NF >= 6 && frequencia >= 96 {
+		return "APROVADO"
+	} else if NF >= 6 && frequencia < 96 {
+		return "REPROVADO POR FREQUENCIA"
+	} else if NF < 6 && frequencia >= 96 {
+		return "REPROVADO POR NOTA"
+	} else {
+		return "REPROVADO POR NOTA E POR FREQUENCIA"
+	}
+}
+
+func q2() {
+	var a, b int
+	fmt.Println("digite o número de habitantes do país A")
+	fmt.Scanln(&a)
+	for {
+		fmt.Println("digite o número de habitantes do país B")
+		fmt.Scanln(&b)
+		if a < b {
+			break
+		} else {
+			fmt.Println("o número de habitantes do país B deve ser maior do que o do país A. Tente novamente")
+		}
+	}
+	CompararCrescimento(a, b)
+
+}
+
+// funções para q2
+func CompararCrescimento(habitantesA int, habitantesB int) {
+	i := 0
+
+	for {
+		incrementoA := float64(habitantesA) * 0.03
+		habitantesA = int(float64(habitantesA) + incrementoA)
+		incrementoB := float64(habitantesB) * 0.015
+		habitantesB = int(float64(habitantesB) + incrementoB)
+
+		i += 1
+
+		if habitantesA >= habitantesB {
+			break
+		}
+
+	}
+	fmt.Println("ANOS = ", i)
+}
+
+func q3() {
+	var n, fatorial int
+	i := 1
+	fmt.Println("insira o numero n")
+	fmt.Scanln(&n)
+	fatorial = n
+	for {
+		fatorial *= (n - i)
+		i++
+		if i == (n - 1) {
+			break
+		}
+
+	}
+	fmt.Println(n, "! = ", fatorial)
+}
+
+func q4() {
+	var n, i, s float64
+	var K int
+	fmt.Println("insira o numero n")
+	fmt.Scanln(&n)
+	fmt.Println("insira o numero i")
+	fmt.Scanln(&i)
+	fmt.Println("insira o numero K")
+	fmt.Scanln(&K)
+	fmt.Println("insira o numero s")
+	fmt.Scanln(&s)
+
+	tabuada(n, i, s, K)
+
+}
+
+// função para q4
+func tabuada(n, i, s float64, K int) {
+
+	o := 0.0
+	//if  tipo == "soma"{
+	fmt.Println("Tabuada da soma")
+	for j := 0; j < K; j++ {
+		fmt.Printf("%.2f + %.2f = %.2f\n", n, i+o, n+(i+o))
+		o = s
+	}
+	o = 0
+	//} else if tipo == "subtração"{
+	fmt.Println("Tabuada da subtração")
+	for j := 0; j < K; j++ {
+		fmt.Printf("%.2f - %.2f = %.2f\n", n, i+o, n-(i+o))
+		o = s
+	}
+	o = 0
+	//} else if tipo == "multiplicação"{
+	fmt.Println("Tabuada da multiplicação")
+	for j := 0; j < K; j++ {
+		fmt.Printf("%.2f - %.2f = %.2f\n", n, i+o, n*(i+o))
+		o = s
+	}
+	o = 0
+	//} else if tipo == "divisão"{
+	fmt.Println("Tabuada da divisão")
+	for j := 0; j < K; j++ {
+		fmt.Printf("%.2f - %.2f = %.2f\n", n, i+o, n/(i+o))
+		o = s
+	}
+}
+
+func q5() {
+	var n, j, p int
+	fmt.Println("insira n")
+	fmt.Scanln(&n)
+
+	fmt.Println("insira o primeiro número")
+	fmt.Scanln(&j)
+	segmentoCrescenteMaximo := 0
+	segmentoAtual := 0
+	for i := 0; i < n-1; i++ {
+		fmt.Println("insira o proximo número")
+		fmt.Scanln(&p)
+
+		if p > j {
+			segmentoAtual++
+
+		} else {
+			segmentoAtual = 0
+		}
+		if segmentoAtual > segmentoCrescenteMaximo {
+			segmentoCrescenteMaximo = segmentoAtual
+		}
+
+		j = p
+	}
+	fmt.Println("o comprimento do segmento crescente maximo é:", segmentoCrescenteMaximo)
+}
+
+func q6() {
+	var n, j, p int
+	fmt.Println("insira n")
+	fmt.Scanln(&n)
+
+	fmt.Println("insira o primeiro número")
+	fmt.Scanln(&j)
+	MaiorSegmentoIgual := 0
+	segmentoAtual := 1
+	for i := 0; i < n-1; i++ {
+		fmt.Println("insira o proximo número")
+		fmt.Scanln(&p)
+
+		if p == j {
+			segmentoAtual++
+
+		} else {
+			segmentoAtual = 1
+		}
+		if segmentoAtual > MaiorSegmentoIgual {
+			MaiorSegmentoIgual = segmentoAtual
+		}
+
+		j = p
+	}
+	fmt.Printf("A maior subsequência de elementos iguais possui %d elementos.", MaiorSegmentoIgual)
+}
+
+func q7() {
+	var n, contadorPar, qtdPar, contadorImpar, qtdImpar int
+	for {
+		fmt.Println("Insira um número para a sequência")
+		fmt.Scanln(&n)
+
+		if n%2 == 0 && n != 0 {
+			contadorPar += n
+			qtdPar++
+
+		} else if n%2 != 0 {
+			contadorImpar += n
+			qtdImpar++
+		}
+
+		if n == 0 {
+			break
+		}
+	}
+	mediaPar := float64(contadorPar / qtdPar)
+	mediaImpar := float64(contadorImpar / qtdImpar)
+
+	fmt.Printf("MEDIA PAR %.2f\n", mediaPar)
+	fmt.Printf("MEDIA IMPAR %.2f", mediaImpar)
+}
+
+func q8() {
+	var n int
+	fmt.Println("Insira um número de times")
+	fmt.Scanln(&n)
+
+	if n < 2 {
+		fmt.Println("campeonato inválido")
+	}
+	contadorFinal := 1
+	for i := 1; i <= n-1; i++ {
+		for j := i + 1; j <= n; j++ {
+			fmt.Printf("Final %d: Time%d X Time%d\n", contadorFinal, i, j)
+			contadorFinal++
+		}
+	}
+}
+
+func q9() {
+	var n int
+	fmt.Println("Insira um número que deseja verificar a primalidade")
+	fmt.Scanln(&n)
+	i := n / 2
+	for {
+		if n%i == 0 {
+			fmt.Println("NÃO É PRIMO")
+			break
+		}
+		i--
+		if i == 1 {
+			fmt.Println("PRIMO")
+			break
+		}
+	}
+}
+
+// pelo que entendi o exercicio pede para o salário só ser retornado depois de todas as entradas serem calculadas, então não usei a função bufio nessa
+func q10() {
+	var horas, valorHora float64
+	var mat int
+	i := 0
+	//scanner := bufio.NewScanner(os.Stdin)
+	dados := make(map[int]string)
+	fmt.Println("digite a matricula, as horas trabalhadas e o valor pago por hora")
+	for {
+
+		fmt.Scanln(&mat, &horas, &valorHora)
+		if mat == 0 {
+			break
+		}
+		salario := horas * valorHora
+		str := fmt.Sprintf("%d %.2f", mat, salario)
+		dados[i] = str
+		i++
+
+	}
+	for n := 0; n <= i-1; n++ {
+		fmt.Println(dados[n])
+	}
+}
+
+// outra versão usando a função bufio e os+
+
+func q10_v2() {
+	var mat int
+	var horas, valorHora float64
+	fmt.Println("digite a matricula, as horas trabalhadas e o valor pago por hora (0 para parar)")
+	for {
+
+		fmt.Scanln(&mat, &horas, &valorHora)
+		bufio.NewReader(os.Stdin).ReadByte()
+		if mat == 0 {
+			break
+		}
+
+		salario := horas * valorHora
+
+		fmt.Printf("%d %.2f\n", mat, salario)
+
+	}
+}
+
+func q11() {
+	var n, e float64
+	fmt.Println("digite o número n")
+	fmt.Scanln(&n)
+	r := 1.0
+	erro := n
+
+	for {
+		fmt.Println("digite o erro admitido")
+		fmt.Scanln(&e)
+		if e < n {
+			break
+		}
+		fmt.Println("o erro admitido deve ser menor que o número n")
+	}
+	for erro > e {
+		r = (r + (n / r)) / 2
+
+		erro = math.Abs(n - (r * r))
+		fmt.Printf("r: %.9f, erro: %.9f\n", r, erro)
+	}
+
+}
+
+func q12() {
+
+	var valorIngresso, valorInicial, valorFinal float64
+
+	fmt.Println("insira o valor do ValorIngresso")
+	fmt.Scanln(&valorIngresso)
+	fmt.Println("insira o valor inicial do intervalo")
+	fmt.Scanln(&valorInicial)
+
+	for {
+		fmt.Println("insira o valor final do intervalo")
+		fmt.Scanln(&valorFinal)
+
+		if valorFinal > valorInicial {
+			break
+		}
+		fmt.Println("INTERVALO INVÁLIDO")
+	}
+	lucro := 0.0
+	melhorValorFinal := 0.0
+	numDeIngressos := 0
+	for i := valorInicial; i <= valorFinal; i++ {
+
+		if valorIngresso >= i {
+			N := (valorIngresso-i)*50 + 120
+
+			L := float64(i*N) - (200.00 + 0.05*N)
+			fmt.Printf("V: %.2f, ", i)
+			fmt.Printf("N: %d, ", int(N))
+			fmt.Printf("L: %.2f\n", L)
+			if L > lucro {
+				lucro = L
+				melhorValorFinal = i
+				numDeIngressos = int(N)
+			}
+
+		} else {
+			N := 120 - (i-valorIngresso)*60
+
+			L := float64(i*N) - (200.00 + 0.05*N)
+			fmt.Printf("V: %.2f, ", i)
+			fmt.Printf("N: %d, ", int(N))
+			fmt.Printf("L: %.2f\n", L)
+			if L > lucro {
+				lucro = L
+				melhorValorFinal = i
+				numDeIngressos = int(N)
+			}
+		}
+	}
+	fmt.Printf("Melhor valor final:  %.2f \nLucro: %.2f\nNumero de ingressos: %d", melhorValorFinal, lucro, numDeIngressos)
+}
+
+func q13() {
+	var n int
+	fmt.Println("insira o valor de n")
+	fmt.Scanln(&n)
+	fmt.Println(n*63 + n*32)
+
+}
+
+func q14() {
+	var m, n int
+	fmt.Println("insira o valor de m ")
+	fmt.Scanln(&m)
+	fmt.Println("insira o valor de n ")
+	fmt.Scanln(&n)
+
+	fmt.Println("(2,1)")
+	for i := 3; i <= m; i++ {
+		impresso := false
+		for j := 1; j <= n; j++ {
+			if i > j {
+				if impresso {
+					fmt.Print("-")
+				}
+				fmt.Printf("(%d,%d)", i, j)
+				impresso = true
+			}
+		}
+		fmt.Println()
+	}
+}
+
+func q15() {
+	var T, a, b int
+	fmt.Println("insira o número de testes que deseja fazer")
+	fmt.Scanln(&T)
+	for i := 0; i <= T; i++ {
+		fmt.Println("insira dois números de três digítos (separados por espaço)")
+		fmt.Scanln(&a, &b)
+		if (a % 10) > (b % 10) {
+			inverterNum(a)
+		}
+		if (a % 10) < (b % 10) {
+			inverterNum(b)
+		}
+		if (a % 10) == (b % 10) {
+			if int((a%100)/10) > int((b%100)/10) {
+				inverterNum(a)
+			}
+			if int((a%100)/10) < int((b%100)/10) {
+				inverterNum(b)
+			}
+			if int((a%100)/10) == int((b%100)/10) {
+				if int(a/100) > int(b/100) {
+					inverterNum(a)
+				}
+				if int(a/100) < int(b/100) {
+					inverterNum(b)
+				}
+				if int(a/100) == int(b/100) {
+					fmt.Println("os números são iguais")
+				}
+			}
+		}
+	}
+}
+
+func inverterNum(j int) {
+	fmt.Print(j % 10)
+	fmt.Print(j % 100 / 10)
+	fmt.Println(int(j / 100))
+}
+
+func q16() {
+	var n int
+	fmt.Println("digite o número n")
+	fmt.Scanln(&n)
+	for hipotenusa := 0; hipotenusa <= n; hipotenusa++ {
+		for cateto1 := 1; cateto1 < hipotenusa; cateto1++ {
+			for cateto2 := cateto1; cateto2 < hipotenusa; cateto2++ {
+				if hipotenusa*hipotenusa == cateto1*cateto1+cateto2*cateto2 {
+					fmt.Printf("hipotenusa = %d, catetetos %d e %d\n", hipotenusa, cateto1, cateto2)
+				}
+			}
+		}
+
+	}
+}
+
+func q17() {
+	var codigo, qtdVendida, lucro0, lucro1, lucro2 int
+	var preçoVenda, preçoCompra, compraSomada, vendaSomada, a, comprasTotal, vendasTotal float64
+	mercMaiorLucro := 0.0
+	mercMaisVendida := 0
+	percentualLucroTotal := 0.0
+	codigo_mercMaisVendida := 0
+	codigo_mercMaiorLucro := 0
+
+	for {
+		fmt.Println("digite os dados da mercadoria (codigo, preço compra, preço venda, qtd vendida)(-1 para sair)")
+		fmt.Scanln(&codigo, &preçoCompra, &preçoVenda, &qtdVendida)
+
+		if codigo == -1 {
+			break
+		}
+
+		lucro := lucroPorcent(preçoCompra, preçoVenda, qtdVendida)
+
+		if lucro < 10.0 {
+			lucro0++
+			a = lucro
+		}
+		if lucro <= 20.0 && lucro >= 10.0 {
+			lucro1++
+			a = lucro
+		}
+		if lucro > 20.00 {
+			lucro2++
+			a = lucro
+		}
+
+		if a > mercMaiorLucro {
+			codigo_mercMaiorLucro = codigo
+			mercMaiorLucro = a
+		}
+		if qtdVendida > mercMaisVendida {
+
+			mercMaisVendida = qtdVendida
+			codigo_mercMaisVendida = codigo
+		}
+		compraSomada += preçoCompra * float64(qtdVendida)
+		vendaSomada += preçoVenda * float64(qtdVendida)
+
+		comprasTotal += preçoCompra * float64(qtdVendida)
+		vendasTotal += preçoVenda * float64(qtdVendida)
+	}
+
+	percentualLucroTotal = ((vendasTotal / comprasTotal) * 100.0) - 100.00
+
+	fmt.Printf("Quantidade de mercadorias que geraram lucro menor que 10%%: %d\nQuantidade de mercadorias que geraram lucro maior ou igual a 10%%, e menor ou igual a 20%%: %d\nQuantidade de mercadorias que geraram lucro maior do que 20%%: %d\n", lucro0, lucro1, lucro2)
+	fmt.Printf("Codigo da mercadoria que gerou maior lucro: %d\nCodigo da mercadoria mais vendida: %d\n", codigo_mercMaiorLucro, codigo_mercMaisVendida)
+	fmt.Printf("Valor total de compras: %.2f, valor total de vendas: %.2f e percentual de lucro total: %.2f%%", comprasTotal, vendasTotal, percentualLucroTotal)
+
+}
+
+func lucroPorcent(preçoCompra float64, preçoVenda float64, qtdVendida int) float64 {
+	min := float64(qtdVendida) * preçoCompra
+	total := float64(qtdVendida)*preçoVenda - min
+	lucro := (total / min) * 100.00
+	return lucro
+}
+
+func q18() {
+	var a, b, c int
+	fmt.Println("Digite três números inteiros diferentes de zero:")
+	fmt.Scanln(&a, &b, &c)
+
+	x := mMc(a, b)
+	mmc := mMc(x, c)
+
+	fmt.Printf("%d %d %d\nMMC:%d\n", a, b, c, mmc)
+}
+
+func algEuclides(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
+}
+
+func mMc(a, b int) int {
+	return a * b / algEuclides(a, b)
+}
+
+func mMc3(a, b, c int) int {
+	return mMc(a, mMc(b, c))
+}
+
+func q18_v2() {
+	var a, b, c, divisor int
+	mmc := 1
+
+	fmt.Println("Digite três números inteiros diferentes de zero:")
+	fmt.Scanln(&a, &b, &c)
+	maior := max(a, b, c)
+	for i := 2; i <= maior; i++ {
+		for {
+			if a%i == 0 || b%i == 0 || c%i == 0 {
+				divisor = i
+			} else {
+				break
+			}
+			if divisor == i {
+				fmt.Printf("%d %d %d :%d\n", a, b, c, divisor)
+				mmc *= divisor
+			}
+			if a%i == 0 {
+				a = int(a / i)
+			}
+			if b%i == 0 {
+				b = int(b / i)
+			}
+			if c%i == 0 {
+				c = int(c / i)
+			}
+
+		}
+
+	}
+	fmt.Printf("MMC: %d", mmc)
+}
+
+func max(a, b, c int) int {
+	max := 0
+	if a >= b && a >= c {
+		max = a
+	} else if b >= a && b >= c {
+		max = b
+	} else {
+		max = c
+	}
+	return max
+}
+
+func q19() {
+	var m int
+	fmt.Println("Digite um número inteiro maior que zero:")
+	fmt.Scanln(&m)
+	impar := 1
+	for n := 1; n <= m; n++ {
+		fmt.Printf("%d * %d * %d = ", n, n, n)
+
+		for i := 1; i <= n; i++ {
+			fmt.Print(impar)
+			if i != n {
+				fmt.Print("+")
+			}
+			impar += 2
+		}
+		fmt.Println()
+	}
+}
+
+func q20() {
+	var n, soma int
+	fmt.Println("Digite um número inteiro maior que um:")
+	fmt.Scanln(&n)
+	fmt.Printf("%d = ", n)
+	ultimoDiv := ultimoDivisor(n)
+	for j := 1; j < n; j++ {
+		if n%j == 0 {
+			print(j)
+			soma += j
+			if j < n-1 && j != ultimoDiv {
+				fmt.Print("+")
+
+			}
+		}
+
+	}
+	fmt.Printf(" = %d ", soma)
+	if soma == n {
+		fmt.Printf("(NUMERO PERFEITO)")
+	} else {
+		fmt.Printf("(NUMERO NAO E PERFEITO)")
+	}
+}
+
+func ultimoDivisor(n int) int {
+	divisores := []int{}
+	for i := 1; i <= int(n/2); i++ {
+		if n%i == 0 {
+			divisores = append(divisores, i)
+		}
+	}
+	tamanho := len(divisores)
+	ultimoDiv := divisores[tamanho-1]
+	return ultimoDiv
+}
+
+func q21() {
+	var L int
+	var n float64
+	lista := []float64{}
+	for {
+
+		fmt.Println("digite o numero de elementos da sequencia")
+		fmt.Scanln(&L)
+		fmt.Println("Pressione Enter para continuar...")
+		fmt.Scanln()
+
+		if L == 0 {
+			break
+		}
+
+		fmt.Println("digite os de elementos da sequencia")
+		for i := 1; i <= L; i++ {
+			fmt.Scan(&n)
+			lista = append(lista, n)
+		}
+		status := verOrdem(lista)
+		fmt.Print(status)
+		fmt.Println()
+		lista = nil
+
+	}
+}
+
+func verOrdem(lista []float64) string {
+	tamanho := len(lista)
+	status := " "
+	for i := 0; i < (tamanho - 1); i++ {
+		if lista[i] > lista[i+1] {
+			status = "DESORDENADA"
+			break
+		} else {
+			status = "ORDENADA"
+		}
+	}
+	return status
+}
+
+// nessa questão não consegui compreender como fazer para um algoritmo aplicavel para números de n casas decimais (o exercicio não especificou nada do tipo), então limitei-o à apenas duas casas decimais seguindo o padrão do exemplo
+func q22() {
+	var N float64
+	fmt.Println("digite o numero N")
+	fmt.Scanln(&N)
+	numerador := int(N * 100)
+	denominador := 100
+	numerador, denominador = simplificar(numerador, denominador)
+	fmt.Printf("%d / %d", numerador, denominador)
+}
+
+func simplificar(numerador int, denominador int) (int, int) {
+	div := algEuclides(numerador, denominador) //usei a func q tinha feito para usar em outra questão
+	numerador = int(numerador / div)
+	denominador = int(denominador / div)
+	return numerador, denominador
+}
+
+func q23() {
+	var n, x, y int
+
+	for {
+		fmt.Println("escolha um número de 1 a 9")
+		fmt.Scanln(&n)
+		if n > 0 && n <= 9 {
+			break
+		}
+		fmt.Println("o número deve estar entre 1 a 9. Tente novamente")
+	}
+
+	count := 0
+	for i := 2; count < n; i++ {
+		x = somaDivisores(i)
+		y = somaDivisores(x)
+		if x > i && y == i {
+			fmt.Printf("(%d,%d)\n", i, x)
+			count++
+
+		}
+	}
+}
+
+func somaDivisores(j int) int {
+	var soma int
+	for i := 1; i <= int(j/2); i++ {
+		if j%i == 0 {
+			soma += +i
+		}
+	}
+	return soma
+}
+
+func q24() {
+	var cos float64
+	um := 1.0
+	k := 1.0
+	x := obterAngulo()
+	N := obterN()
+	for n := 0; n <= N; n++ {
+		cos += um * k / float64(fatorial(2*n))
+		um *= -1
+		k *= x * x
+	}
+	fmt.Printf("cos(%.2f) = %.6f", x, cos)
+
+}
+
+func obterAngulo() float64 {
+	var x float64
+	fmt.Println("escolha um valor positivo para o ângulo x (radianos)")
+	fmt.Scanln(&x)
+	if x >= 0 {
+		return x
+	}
+	fmt.Println("O ângulo deve ser positivo. Tente novamente")
+	return obterAngulo()
+
+}
+
+func obterN() int {
+	var N int
+	fmt.Println("escolha um valor entre 1 e 9 para o N")
+	fmt.Scanln(&N)
+	if N >= 0 && N <= 9 {
+		return N
+	}
+	fmt.Println("O valor deve estar entre 1 e 9. Tente novamente")
+	return obterN()
+}
+
+func fatorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * fatorial(n-1)
+}
+
+func q25() {
+	var e float64
+	k := 1.0
+	x := obterX()
+	N := obterN()
+	for n := 0; n <= N; n++ {
+		e += k / float64(fatorial(n))
+		k *= x
+	}
+	fmt.Printf("e^%.2f = %.6f", x, e)
+
+}
+
+func obterX() float64 {
+	var X float64
+	fmt.Println("escolha um valor positivo para o x")
+	fmt.Scanln(&X)
+	if X >= 0 {
+		return X
+	}
+	fmt.Println("O valor deve ser positivo. Tente novamente")
+	return obterX()
+}
+
+func q26() {
+	var sen float64
+	um := 1.0
+	x := obterAngulo()
+	k := x
+	N := obterN()
+	for n := 0; n <= N; n++ {
+		sen += um * k / float64(fatorial(2*n+1))
+		um *= -1
+		k *= x * x
+	}
+	fmt.Printf("seno(%.2f) = %.6f", x, sen)
+}
+
+func q27() {
+	var n int
+	for {
+		fmt.Println("escolha um número ")
+		fmt.Scanln(&n)
+		if n > 0 {
+			break
+		}
+		fmt.Printf("Fatoracao nao e possivel para o numero %d!\n", n)
+	}
+	fmt.Printf("%d = ", n)
+	numeros := []int{}
+	for n%2 == 0 {
+		numeros = append(numeros, 2)
+		n /= 2
+	}
+	for i := 3; i*i <= n; i += 2 {
+		for n%i == 0 {
+			numeros = append(numeros, i)
+			n /= i
+		}
+	}
+	if n > 2 {
+		numeros = append(numeros, n)
+	}
+
+	for i := 0; i <= len(numeros)-1; i++ {
+		fmt.Printf("%v", numeros[i])
+		if i != len(numeros)-1 {
+			fmt.Print(" x ")
+		}
+
+	}
+}
