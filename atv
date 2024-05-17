@@ -1,0 +1,26 @@
+package main
+
+
+import "fmt"
+
+func main() {
+    insertionSort()
+}
+func insertionSort() {
+   
+   
+    var vetor = []int{3,7,9,2,6,0}
+   
+    for i:=1;i<len(vetor);i++{
+        j:=i
+        for j >0 && vetor[j]<vetor[j-1]{
+                 swap(j,vetor)
+                 j--
+        }
+       
+    }
+    fmt.Println(vetor)
+}
+func swap(i int, vetor []int){
+    vetor[i],vetor[i-1]= vetor[i-1],vetor[i]
+}
