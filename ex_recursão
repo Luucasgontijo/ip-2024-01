@@ -1,0 +1,51 @@
+package main
+
+import "fmt"
+
+func main() {
+    num := 10
+    fmt.Printf("O número %d em binário é: %s\n", num, decimalToBinary(num))
+}
+
+
+func decimalToBinary(n int) string {
+    
+    if n == 0 {
+        return "0"
+    }
+    
+    if n == 1 {
+        return "1"
+    }
+    
+    return decimalToBinary(n / 2) + fmt.Sprintf("%d", n % 2)
+
+}
+func reverseArray(array []int, start, end int) {
+    
+    if start >= end {
+        return
+    }
+
+    
+    array[start], array[end] = array[end], array[start]
+
+   
+    reverseArray(array, start+1, end-1)
+}
+func exponencial(x, n int) int {
+    if n == 0 {
+        return 1
+    }
+    return x * exponencial(x, n-1)
+}
+
+
+func somaArray(array []int) int {
+
+    if len(array) == 0 {
+        return 0
+    }
+
+    return array[0] + somaArray(array[1:])
+}
